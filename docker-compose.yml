@@ -14,9 +14,9 @@ services:
     depends_on:
       - db
 
-  # 2. Servidor Web Nginx
+  # 2. Servidor Web Nginx /version del nginx/ nombre del contendor
   nginx:
-    image: nginx:1.21-alpine
+    image: nginx:1.28.0-alpine
     container_name: laravel_nginx
     restart: unless-stopped
     ports:

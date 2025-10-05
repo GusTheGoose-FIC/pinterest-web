@@ -2,13 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\DB;
+use App\Models\User;
 use Illuminate\View\View;
 
 
-class Controller extends 
+class Controller extends Controller
 {
-    $users = DB::table('users')->get()->toJson();
-    dd($users);
-   
+    public function show(string $id): View
+    {
+        return view('user.profile', [
+            'user' => User::findOrFail($id)
+        ]);
+    }
 }
