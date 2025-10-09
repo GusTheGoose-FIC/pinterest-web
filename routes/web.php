@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\indexController;
+use App\Http\Controllers\inicioController;
 
 
 
@@ -11,4 +12,7 @@ Route::get('/test', function () {
     return response()->json(['message' => 'API funcionando']);
 });
 
-Route::get('/', [indexController::class, 'index']);
+Route::get('/homefeed', [indexController::class, 'index']);
+
+Route::get('/', [inicioController::class, 'inicio']);
+

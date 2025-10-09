@@ -20,12 +20,19 @@ RUN composer install \
 # Agarra la imagen del php y le pone fpm que es lo que necesita para que funciones con el nginx
 FROM php:8.2-fpm
 
+RUN apt-get update && apt-get install -y curl
+
+RUN curl -sL https://deb.nodesource.com/setup_22.x | bash -
+
 # corre el comando de para instalar paquetes y libpq para el postgres
-RUN apt-get update && apt-get install -y \
+RUN apt-get install -y \
+    nodejs \ 
     libpq-dev \
     zip \
     unzip \
     && docker-php-ext-install pdo pdo_pgsql bcmath
+    
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 # ahora le va a decir donde va a trabajar como el de arriba
 WORKDIR /var/www
