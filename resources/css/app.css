@@ -1,13 +1,11 @@
 @import 'tailwindcss';
 
 
-
-
 .menu-navegacion{
     display: flex;
 }
 
-.icono-pequeño{
+.icono-pequeno{
     width: 24px;
     height: 24px;
 }

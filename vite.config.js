@@ -22,7 +22,7 @@ export default defineConfig({
            },
        }
     ],
-        server: {
+    server: {
         host: '0.0.0.0',
         port: 5173,
         hmr: {
