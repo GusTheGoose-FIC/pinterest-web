@@ -51,22 +51,4 @@ services:
       PGADMIN_DEFAULT_PASSWORD: admin
     networks:
       - laravel_network
-  composer:
-    build: 
-      context: .
-      dockerfile: dockerfiles/composer.dockerfile
-    volumes:
-      - ./:/var/www/html
-    depends_on:
-      - php
-    networks:
-      - laravel_network
-  artisan:
-    build: 
-      context: .
-      dockerfile: dockerfiles/php.dockerfile
-    volumes:
-      - ./:/var/www/html
-    entrypoint: ["php", "/var/www/html/artisan"]
-    networks:
-      - laravel_network
+  

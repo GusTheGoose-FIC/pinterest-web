@@ -11,4 +11,13 @@ class inicioController extends Controller
     {
         return view('inicio');
     }
+
+    public function Información()
+    {
+        return view('Información');
+    }
+     public function empresa()
+    {
+        return view('empresa');
+    }
 }
