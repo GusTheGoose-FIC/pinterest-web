@@ -53,6 +53,5 @@ services:
       PGADMIN_DEFAULT_PASSWORD: admin
     networks:
       - laravel_network
-
 volumes:
   pgdata:
