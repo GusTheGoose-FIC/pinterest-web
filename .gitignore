@@ -16,6 +16,7 @@
 /public/build
 /public/hot
 /public/storage
+/postgres_data
 /storage/*.key
 /storage/pail
 /vendor
