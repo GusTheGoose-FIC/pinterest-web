@@ -20,4 +20,12 @@ Route::get('/Información', [inicioController::class, 'Información'])->name('In
 
 Route::get('/empresa', [inicioController::class, 'empresa'])->name('empresa');
 
+Route::get('/Create', [inicioController::class, 'Create'])->name('Create');
+
+Route::get('/News', [inicioController::class, 'News'])->name('News');
+
+Route::get('/Login', [inicioController::class, 'Login'])->name('Login');
+
+Route::get('/Registro', [inicioController::class, 'Registro'])->name('Registro');
+
 

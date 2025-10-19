@@ -18,6 +18,7 @@
     <div class="flex items-center space-x-6 text-blue-700 font-medium">
       <a href="{{ route('Información') }}" class="hover:underline">About Pinteres</a>
       <a href="#" class="hover:underline">Creacion de contenido</a>
+      <a href="#" class="hover:underline">advertencia</a>
       <a href="#" class="hover:underline">news + insights</a>
       <a href="#" class="hover:underline">Resources</a>
     </div>

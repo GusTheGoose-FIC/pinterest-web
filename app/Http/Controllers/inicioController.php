@@ -20,4 +20,20 @@ class inicioController extends Controller
     {
         return view('empresa');
     }
+     public function Create()
+    {
+        return view('Create');
+    }
+     public function News()
+    {
+        return view('News');
+    }
+      public function Login()
+    {
+        return view('Login');
+    }
+        public function Registro()
+        {
+            return view('Registro');
+        }
 }

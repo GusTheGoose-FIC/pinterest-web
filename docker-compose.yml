@@ -22,6 +22,8 @@ services:
       dockerfile: dockerfiles/php.dockerfile
     volumes:
       - ./:/var/www/html:delegated
+    # WARNING: running as root is for development convenience on Windows only
+    user: "0:0"
     container_name: laravel_php
     networks:
       - laravel_network
@@ -37,7 +39,7 @@ services:
     networks:
       - laravel_network
     volumes:
-      - ./postgres_data:/var/lib/postgresql/data
+      - pgdata:/var/lib/postgresql/data
     
   pgadmin:
     image: dpage/pgadmin4
@@ -51,4 +53,6 @@ services:
       PGADMIN_DEFAULT_PASSWORD: admin
     networks:
       - laravel_network
-  
+
+volumes:
+  pgdata:

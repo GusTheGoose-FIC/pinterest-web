@@ -54,7 +54,7 @@
           <a href="#" class="px-4 py-2 text-gray-700 hover:bg-gray-100 hover:text-[#E60023] transition-colors duration-150">Construyendo una plataforma Positiva</a>
                     <a href="#" class="px-4 py-2 text-gray-700 hover:bg-gray-100 hover:text-[#E60023] transition-colors duration-150">Priorizar alas personas</a>
           <a href="#" class="px-4 py-2 text-gray-700 hover:bg-gray-100 hover:text-[#E60023] transition-colors duration-150">Protegiendo nuestro planeta</a>
-          <a href="#" class="px-4 py-2 text-gray-700 hover:bg-gray-100 hover:text-[#E60023] transition-colors duration-150">Progreso con integridad</a>
+          <a href="#" class="px-4 py-2 text-gray-700 hover:bg-gray-100 hover:text-[#E60023] transition-colors duration-150">Progreso con</a>
         </div>
       </div>
       <a href="#" class="hover:underline hover:text-[#E60023] transition-colors duration-150">Recursos</a>
