@@ -26,6 +26,22 @@ Route::get('/News', [inicioController::class, 'News'])->name('News');
 
 Route::get('/Login', [inicioController::class, 'Login'])->name('Login');
 
-Route::get('/Registro', [inicioController::class, 'Registro'])->name('Registro');
+Route::get('/registro', [inicioController::class, 'registro'])->name('registro');
 
+Route::get('/Condiciones', [inicioController::class, 'Condiciones'])->name('Condiciones');
 
+Route::get('/PoliticasPrivacidad', [inicioController::class, 'PoliticasPrivacidad'])->name('PoliticasPrivacidad');
+
+Route::get('/Comunidad', [inicioController::class, 'Comunidad'])->name('Comunidad');
+
+Route::get('/propiedadIntelectual', [inicioController::class, 'propiedadIntelectual'])->name('propiedadIntelectual');
+
+Route::get('/marcaComercial', [inicioController::class, 'marcaComercial'])->name('marcaComercial');
+
+Route::get('/Transparencia', [inicioController::class, 'Transparencia'])->name('Transparencia');
+
+Route::get('/Mas', [inicioController::class, 'Mas'])->name('Mas');
+
+Route::get('/Ayuda', [inicioController::class, 'Ayuda'])->name('Ayuda');
+
+Route::get('/AvisosnoUsuario', [inicioController::class, 'AvisosnoUsuarios'])->name('AvisosnoUsuario');

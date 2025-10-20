@@ -74,7 +74,7 @@
         </button>
 
         <div class="text-center Login mt-4">
-                <a href="{{ route('Registro') }}" class="text-sm text-blue-600 hover:underline">¿No tienes cuenta registrate aqui?</a>
+                <a href="{{ route('registro') }}" class="text-sm text-blue-600 hover:underline">¿No tienes cuenta registrate aqui?</a>
             </div>
     </div>
 

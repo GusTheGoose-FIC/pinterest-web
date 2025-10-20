@@ -1,12 +1,13 @@
+<!DOCTYPE html>
+<html lang="es">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Pinterest - México</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-white">
+<body class="bg-white flex flex-col min-h-screen">
   <nav class="flex items-center justify-between px-6 py-3 shadow-sm">
-    
     <div class="flex items-center space-x-2">
       <svg style="width: 30px; height: 30px;" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
         <circle cx="16" cy="16" r="14" fill="white"></circle>
@@ -22,11 +23,38 @@
       <a href="{{ route('Create') }}" class="hover:underline">Crear</a>
       <a href="{{ route('News') }}" class="hover:underline">Noticias</a>
     </div>
+
     <div class="flex items-center space-x-3">
-     <button onclick="window.location.href='{{ route('Login') }}'"
-    class="bg-[#E60023] text-white font-semibold px-4 py-2 rounded-full hover:bg-[#ad0019] transition">Log in</button>
-      <button class="bg-gray-100 text-black font-semibold px-4 py-2 rounded-full hover:bg-gray-200 transition">Sign up</button>
+      <button onclick="window.location.href='{{ route('Login') }}'"
+        class="bg-[#E60023] text-white font-semibold px-4 py-2 rounded-full hover:bg-[#ad0019] transition">
+        Log in
+      </button>
+      <button onclick="window.location.href='{{ route('registro') }}'"
+      class="bg-gray-100 text-black font-semibold px-4 py-2 rounded-full hover:bg-gray-200 transition">
+        Sign up
+      </button>
     </div>
   </nav>
+
+  <main class="flex-grow">
+    <div class="text-center py-24">
+      <h2 class="text-3xl font-semibold text-gray-800">aqui pongan el contenido locos</h2>
+      <p class="text-gray-500 mt-3">Inspírate, crea y comparte tus ideas favoritas</p>
+    </div>
+  </main>
+  <footer class="w-full border-t border-gray-200 bg-white py-4">
+    <div class="max-w-6xl mx-auto px-4 flex flex-wrap justify-center text-sm text-gray-600 space-x-4">
+      <a href="{{ route('Condiciones') }}" class="text-blue-600 hover:underline">Condiciones de servicio</a>
+      <a href="{{ route('PoliticasPrivacidad') }}" class="text-blue-600 hover:underline">Política de privacidad</a>
+      <a href="{{ route('Ayuda') }}" class="text-blue-600 hover:underline">Ayuda</a>
+      <a href="#" class="text-blue-600 hover:underline">Movil</a>
+      <a href="#" class="text-blue-600 hover:underline">Usuarios</a>
+      <a href="#" class="text-blue-600 hover:underline">Colecciones</a>
+      <a href="#" class="text-blue-600 hover:underline">Compras</a>
+      <a href="#" class="text-blue-600 hover:underline">Explorar</a>
+      <a href="{{ route('AvisosnoUsuarios') }}" class="text-blue-600 hover:underline">Aviso de no usuario</a>
+    </div>
+  </footer>
+
 </body>
 </html>

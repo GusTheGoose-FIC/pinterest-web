@@ -32,8 +32,46 @@ class inicioController extends Controller
     {
         return view('Login');
     }
-        public function Registro()
+        public function registro()
         {
-            return view('Registro');
+            return view('registro');
         }
+        public function Condiciones()
+        {
+            return view('Condiciones');
+        }
+        public function PoliticasPrivacidad()
+        {
+            return view('PoliticasPrivacidad');
+        }
+       
+         public function Comunidad()
+        {
+            return view('Comunidad');
+        }
+         public function propiedadIntelectual()
+        {
+            return view('propiedadIntelectual');
+        }
+            public function marcaComercial()
+            {
+                return view('marcaComercial');
+            }
+            public function Transparencia()
+            {
+                return view('Transparencia');
+            }
+                public function Mas()
+                {
+                    return view('Mas');
+                }
+                public function Ayuda()
+                {
+                    return view('Ayuda');
+                }
+                public function AvisosnoUsuarios()
+                {
+                    return view('AvisosnoUsuario');
+                }
+
 }
