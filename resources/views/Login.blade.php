@@ -30,7 +30,7 @@
         <h2 class="text-3xl font-bold text-gray-900 mb-8">Pinterest</h2>
 
        
-        <form action="{{ route('Login') }}" method="POST" class="space-y-4">
+        <form action="{{ route('Login') }}" method="POST" class="space-y-4" >
             @csrf
             <div>
                 <input type="email" name="email" placeholder="Correo electrónico" required
