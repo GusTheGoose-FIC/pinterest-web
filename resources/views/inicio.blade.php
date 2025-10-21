@@ -5,6 +5,51 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Pinterest - México</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  <script>
+function carousel() {
+    return {
+        currentIndex: 0,
+        slides: [
+            {
+                titulo: 'actividad para niños',
+                imagenes: [
+                    '{{ asset('ImagenesInicio/niños1.jpg') }}',
+                    '{{ asset('ImagenesInicio/niños2.jpg') }}',
+                    '{{ asset('ImagenesInicio/niños3.jpg') }}',
+                    '{{ asset('ImagenesInicio/niños4.jpg') }}',
+                ]
+            },
+            {
+                titulo: 'aventura familiar',
+                imagenes: [
+                    '{{ asset('ImagenesInicio/familia1.jpeg') }}',
+                    '{{ asset('ImagenesInicio/familia2.jpeg') }}',
+                    '{{ asset('ImagenesInicio/familia3.jpeg') }}',
+                    '{{ asset('ImagenesInicio/familia4.jpg') }}',
+                ]
+            },
+            {
+                titulo: 'diversión acuática',
+                imagenes: [
+                    '{{ asset('ImagenesInicio/piscina1.jpg') }}',
+                    '{{ asset('ImagenesInicio/piscina2.jpg') }}',
+                    '{{ asset('ImagenesInicio/piscina3.jpg') }}',
+                    '{{ asset('ImagenesInicio/piscina4.jpg') }}',
+                ]
+            },
+        ],
+        goToSlide(i) {
+            this.currentIndex = i;
+        },
+        init() {
+            setInterval(() => {
+                this.currentIndex = (this.currentIndex + 1) % this.slides.length;
+            }, 6000);
+        }
+    }
+}
+</script>
 </head>
 <body class="bg-white flex flex-col min-h-screen">
   <nav class="flex items-center justify-between px-6 py-3 shadow-sm">
@@ -37,10 +82,58 @@
   </nav>
 
   <main class="flex-grow">
-    <div class="text-center py-24">
-      <h2 class="text-3xl font-semibold text-gray-800">aqui pongan el contenido locos</h2>
-      <p class="text-gray-500 mt-3">Inspírate, crea y comparte tus ideas favoritas</p>
+  <div 
+    x-data="carousel()" 
+    x-init="init()" 
+    class="relative w-full overflow-hidden bg-white py-16">
+
+    <!-- Texto principal -->
+    <div class="text-center mb-12">
+        <h2 
+            class="text-4xl font-bold text-gray-900"
+            x-transition.opacity
+        >
+            Descubre tu próxima
+        </h2>
+        <h3 
+            class="text-4xl font-bold text-green-700 mt-2 transition-all duration-700"
+            x-text="slides[currentIndex].titulo"
+            x-transition:enter="transition ease-out duration-700"
+            x-transition:enter-start="opacity-0 translate-y-4"
+            x-transition:enter-end="opacity-100 translate-y-0"
+            x-transition:leave="transition ease-in duration-500"
+            x-transition:leave-start="opacity-100 translate-y-0"
+            x-transition:leave-end="opacity-0 -translate-y-4"
+        ></h3>
     </div>
+
+    <!-- Imágenes -->
+    <div class="flex justify-center gap-4 flex-wrap transition-all duration-700">
+        <template x-for="(imagen, i) in slides[currentIndex].imagenes" :key="i">
+            <img 
+                :src="imagen" 
+                class="w-48 h-64 object-cover rounded-2xl shadow-md transform hover:scale-105 transition-transform duration-500" 
+                x-transition:enter="transition ease-out duration-700"
+                x-transition:enter-start="opacity-0 scale-95"
+                x-transition:enter-end="opacity-100 scale-100"
+                x-transition:leave="transition ease-in duration-500"
+                x-transition:leave-start="opacity-100 scale-100"
+                x-transition:leave-end="opacity-0 scale-95"
+            />
+        </template>
+    </div>
+
+    <!-- Indicadores -->
+    <div class="flex justify-center mt-8 space-x-2">
+        <template x-for="(slide, i) in slides" :key="i">
+            <button 
+                @click="goToSlide(i)"
+                class="w-3 h-3 rounded-full transition-all duration-300"
+                :class="i === currentIndex ? 'bg-green-600 scale-110' : 'bg-gray-300 hover:bg-gray-400'">
+            </button>
+        </template>
+    </div>
+</div>
   </main>
   <footer class="w-full border-t border-gray-200 bg-white py-4">
     <div class="max-w-6xl mx-auto px-4 flex flex-wrap justify-center text-sm text-gray-600 space-x-4">
@@ -52,7 +145,7 @@
       <a href="#" class="text-blue-600 hover:underline">Colecciones</a>
       <a href="#" class="text-blue-600 hover:underline">Compras</a>
       <a href="#" class="text-blue-600 hover:underline">Explorar</a>
-      <a href="{{ route('AvisosnoUsuarios') }}" class="text-blue-600 hover:underline">Aviso de no usuario</a>
+      <a href="{{ route('AvisosnoUsuario') }}" class="text-blue-600 hover:underline">Aviso de no usuario</a>
     </div>
   </footer>
 

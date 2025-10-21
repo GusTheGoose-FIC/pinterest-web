@@ -69,9 +69,13 @@ class inicioController extends Controller
                 {
                     return view('Ayuda');
                 }
-                public function AvisosnoUsuarios()
+                public function AvisosnoUsuario()
                 {
                     return view('AvisosnoUsuario');
+                }
+                public function Liderazgo()
+                {
+                    return view('Liderazgo');
                 }
 
 }

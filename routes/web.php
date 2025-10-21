@@ -16,6 +16,8 @@ Route::get('/homefeed', [indexController::class, 'index']);
 
 Route::get('/', [inicioController::class, 'inicio']);
 
+Route::get('/incio', [inicioController::class, 'inicio'])->name('inicio');
+
 Route::get('/Información', [inicioController::class, 'Información'])->name('Información');
 
 Route::get('/empresa', [inicioController::class, 'empresa'])->name('empresa');
@@ -45,3 +47,4 @@ Route::get('/Mas', [inicioController::class, 'Mas'])->name('Mas');
 Route::get('/Ayuda', [inicioController::class, 'Ayuda'])->name('Ayuda');
 
 Route::get('/AvisosnoUsuario', [inicioController::class, 'AvisosnoUsuarios'])->name('AvisosnoUsuario');
+Route::get('/Liderazgo', [inicioController::class, 'Liderazgo'])->name('Liderazgo');
