@@ -32,50 +32,48 @@ class inicioController extends Controller
     {
         return view('Login');
     }
-        public function registro()
-        {
-            return view('registro');
-        }
-        public function Condiciones()
-        {
-            return view('Condiciones');
-        }
-        public function PoliticasPrivacidad()
-        {
-            return view('PoliticasPrivacidad');
-        }
-       
-         public function Comunidad()
-        {
-            return view('Comunidad');
-        }
-         public function propiedadIntelectual()
-        {
-            return view('propiedadIntelectual');
-        }
-            public function marcaComercial()
-            {
-                return view('marcaComercial');
-            }
-            public function Transparencia()
-            {
-                return view('Transparencia');
-            }
-                public function Mas()
-                {
-                    return view('Mas');
-                }
-                public function Ayuda()
-                {
-                    return view('Ayuda');
-                }
-                public function AvisosnoUsuario()
-                {
-                    return view('AvisosnoUsuario');
-                }
-                public function Liderazgo()
-                {
-                    return view('Liderazgo');
-                }
-
+    public function registro()
+    {
+        return view('registro');
+    }
+    public function Condiciones()
+    {
+        return view('Condiciones');
+    }
+    public function PoliticasPrivacidad()
+    {
+        return view('PoliticasPrivacidad');
+    }
+    public function Comunidad()
+    {
+        return view('Comunidad');
+    }
+    public function propiedadIntelectual()
+    {
+        return view('propiedadIntelectual');
+    }
+    public function marcaComercial()
+    {
+        return view('marcaComercial');
+    }
+    public function Transparencia()
+    {
+        return view('transparencia');
+    }
+    public function Mas()
+    {
+        return view('Mas');
+    }
+    public function Ayuda()
+    {
+        return view('Ayuda');
+    }
+    public function AvisosnoUsuario()
+    {
+        return view('AvisosnoUsuario');
+    }
+    public function Liderazgo()
+    {
+        return view('Liderazgo');
+    }
 }

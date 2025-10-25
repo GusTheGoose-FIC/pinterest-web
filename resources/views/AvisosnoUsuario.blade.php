@@ -18,7 +18,7 @@
           <li><a href="{{ route('PoliticasPrivacidad') }}" class="hover:underline">Privacidad</a></li>
           <li><a href="{{ route('Comunidad') }}" class="hover:underline">Comunidad</a></li>
           <li><a href="{{ route('propiedadIntelectual') }}" class="hover:underline">Propiedad intelectual</a></li>
-          <li><a href="{{ route('Transparencia') }}" class="hover:underline">Transparencia</a></li>
+          <li><a href="{{ route('transparencia') }}" class="hover:underline">Transparencia</a></li>
           <li><a href="{{ route('Mas') }}" class="hover:underline">Más</a></li>
         </ul>
       </div>

@@ -43,7 +43,7 @@
 
         <div class="submenucompañia-enter absolute top-full left-0 hidden group-hover:flex flex-col bg-white shadow-lg rounded-md w-44 z-10 border border-gray-100">
           <a href="{{ route('PoliticasPrivacidad') }}" class="px-4 py-2 text-gray-700 hover:bg-gray-100 hover:text-[#E60023] transition-colors duration-150">Politicas de privacidad</a>
-          <a href="#" class="px-4 py-2 text-gray-700 hover:bg-gray-100 hover:text-[#E60023] transition-colors duration-150">Aviso para no usuarios</a>
+          <a href="{{ route('AvisosnoUsuario') }}" class="px-4 py-2 text-gray-700 hover:bg-gray-100 hover:text-[#E60023] transition-colors duration-150">Aviso para no usuarios</a>
           <a href="#" class="px-4 py-2 text-gray-700 hover:bg-gray-100 hover:text-[#E60023] transition-colors duration-150">Grabacion de llamadas</a>
         </div>
       </div>
@@ -84,7 +84,7 @@
         </a>
 
         <div class="submenucompañia-enter absolute top-full left-0 hidden group-hover:flex flex-col bg-white shadow-lg rounded-md w-44 z-10 border border-gray-100">
-          <a href="#" class="px-4 py-2 text-gray-700 hover:bg-gray-100 hover:text-[#E60023] transition-colors duration-150">Transparencia</a>
+          <a href="{{ route('transparencia') }}" class="px-4 py-2 text-gray-700 hover:bg-gray-100 hover:text-[#E60023] transition-colors duration-150">Transparencia</a>
         </div>
       </div>
 
