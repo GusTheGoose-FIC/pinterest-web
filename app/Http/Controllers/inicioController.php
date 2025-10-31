@@ -32,10 +32,6 @@ class inicioController extends Controller
     {
         return view('Login');
     }
-    public function registro()
-    {
-        return view('registro');
-    }
     public function Condiciones()
     {
         return view('Condiciones');

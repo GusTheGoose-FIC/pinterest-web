@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\RegisteredUserController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\indexController;
 use App\Http\Controllers\inicioController;
@@ -27,7 +28,7 @@ Route::get('/News', [inicioController::class, 'News'])->name('News');
 
 Route::get('/Login', [inicioController::class, 'Login'])->name('Login');
 
-Route::get('/registro', [inicioController::class, 'registro'])->name('registro');
+Route::get('/registro', [RegisteredUserController::class, 'registro'])->name('registro');
 
 Route::get('/Condiciones', [inicioController::class, 'Condiciones'])->name('Condiciones');
 
@@ -47,3 +48,5 @@ Route::get('/Ayuda', [inicioController::class, 'Ayuda'])->name('Ayuda');
 
 Route::get('/AvisosnoUsuario', [inicioController::class, 'AvisosnoUsuarios'])->name('AvisosnoUsuario');
 Route::get('/Liderazgo', [inicioController::class, 'Liderazgo'])->name('Liderazgo');
+
+require __DIR__.'/auth.php';
