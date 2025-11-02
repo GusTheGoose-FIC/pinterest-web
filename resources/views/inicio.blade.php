@@ -6,6 +6,43 @@
   <title>Pinterest - México</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  
+  <script>
+document.addEventListener("DOMContentLoaded", () => {
+
+    let currentSection = 0;
+
+    const sections = document.querySelectorAll("section");
+
+    function updateSections() {
+        sections.forEach((sec, i) => {
+            sec.classList.remove("active", "left");
+            if (i === currentSection) {
+                sec.classList.add("active");
+            } else if (i < currentSection) {
+                sec.classList.add("left");
+            }
+        });
+    }
+
+    updateSections();
+
+    document.addEventListener("keydown", (e) => {
+
+        if (e.key === "ArrowDown" || e.key === "ArrowRight") {
+            if (currentSection < sections.length - 1) currentSection++;
+        } 
+        
+        if (e.key === "ArrowUp" || e.key === "ArrowLeft") {
+            if (currentSection > 0) currentSection--;
+        }
+
+        updateSections();
+    });
+
+});
+</script>
+
   <script>
 function carousel() {
     return {
@@ -51,9 +88,9 @@ function carousel() {
 }
 </script>
 </head>
-<body class="bg-white flex flex-col min-h-screen">
+<body class="bg-white flex flex-col min-h-screen overflow-hidden">
   <nav class="flex items-center justify-between px-6 py-3 shadow-sm">
-    <div class="flex items-center space-x-2">
+    <div class="flex items-center space-x-2 overflow-hidden">
       <svg style="width: 30px; height: 30px;" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
         <circle cx="16" cy="16" r="14" fill="white"></circle>
         <path d="M16 30C23.732 30 30 23.732 30 16C30 8.26801 23.732 2 16 2C8.26801 2 2 8.26801 2 16C2 21.6801 5.38269 26.5702 10.2435 28.7655C10.25 28.6141 10.2573 28.4752 10.2636 28.3561C10.2722 28.1938 10.2788 28.0682 10.2788 27.9976C10.2788 27.5769 10.5649 25.4904 10.5649 25.4904L12.3149 18.3053C12.0457 17.8678 11.8438 16.9423 11.8438 16.2356C11.8438 12.9711 13.6611 12.2644 14.7716 12.2644C16.1851 12.2644 16.5048 13.7957 16.5048 14.9231C16.5048 15.5194 16.1955 16.4528 15.8772 17.4134C15.5398 18.4314 15.1923 19.4799 15.1923 20.1899C15.1923 21.5697 16.5553 22.2596 17.4976 22.2596C19.988 22.2596 22.2764 19.1298 22.2764 16C22.2764 12.8702 20.8125 9.08412 16.0168 9.08412C11.2212 9.08412 9.06731 12.7356 9.06731 15.5288C9.06731 17.4134 9.77404 18.7933 10.1274 19.0288C10.2284 19.1186 10.4 19.3957 10.2788 19.786C10.1577 20.1764 9.9367 21.0481 9.84135 21.4351C9.83013 21.5248 9.72356 21.6774 9.38702 21.5697C8.96635 21.4351 6.29087 19.7524 6.29087 15.5288C6.29087 11.3053 9.60577 6.39182 16.0168 6.39182C22.4279 6.39182 25.7091 10.6995 25.7091 16C25.7091 21.3005 21.4183 24.6827 18.1538 24.6827C15.5423 24.6827 14.5192 23.516 14.3341 22.9327L13.3413 26.7187C13.1069 27.3468 12.6696 28.4757 12.1304 29.4583C13.3594 29.8111 14.6576 30 16 30Z" fill="#E60023"></path>
@@ -81,60 +118,29 @@ function carousel() {
     </div>
   </nav>
 
-  <main class="flex-grow">
-  <div 
-    x-data="carousel()" 
-    x-init="init()" 
-    class="relative w-full overflow-hidden bg-white py-16">
+<main id="scrollContainer"
+    class="flex-grow snap-y snap-mandatory h-screen overflow-y-scroll overflow-x-hidden">
 
-    <!-- Texto principal -->
-    <div class="text-center mb-12">
-        <h2 
-            class="text-4xl font-bold text-gray-900"
-            x-transition.opacity
-        >
-            Descubre tu próxima
-        </h2>
-        <h3 
-            class="text-4xl font-bold text-green-700 mt-2 transition-all duration-700"
-            x-text="slides[currentIndex].titulo"
-            x-transition:enter="transition ease-out duration-700"
-            x-transition:enter-start="opacity-0 translate-y-4"
-            x-transition:enter-end="opacity-100 translate-y-0"
-            x-transition:leave="transition ease-in duration-500"
-            x-transition:leave-start="opacity-100 translate-y-0"
-            x-transition:leave-end="opacity-0 -translate-y-4"
-        ></h3>
-    </div>
+    <section class="snap-start h-screen overflow-hidden">
+        @include('inicio.carrusel')
+    </section>
 
-    <!-- Imágenes -->
-    <div class="flex justify-center gap-4 flex-wrap transition-all duration-700">
-        <template x-for="(imagen, i) in slides[currentIndex].imagenes" :key="i">
-            <img 
-                :src="imagen" 
-                class="w-48 h-64 object-cover rounded-2xl shadow-md transform hover:scale-105 transition-transform duration-500" 
-                x-transition:enter="transition ease-out duration-700"
-                x-transition:enter-start="opacity-0 scale-95"
-                x-transition:enter-end="opacity-100 scale-100"
-                x-transition:leave="transition ease-in duration-500"
-                x-transition:leave-start="opacity-100 scale-100"
-                x-transition:leave-end="opacity-0 scale-95"
-            />
-        </template>
-    </div>
+  
+    <section class="snap-start h-screen overflow-hidden">
+        @include('inicio.buscaIdea')
+    </section>
 
-    <!-- Indicadores -->
-    <div class="flex justify-center mt-8 space-x-2">
-        <template x-for="(slide, i) in slides" :key="i">
-            <button 
-                @click="goToSlide(i)"
-                class="w-3 h-3 rounded-full transition-all duration-300"
-                :class="i === currentIndex ? 'bg-green-600 scale-110' : 'bg-gray-300 hover:bg-gray-400'">
-            </button>
-        </template>
-    </div>
-</div>
-  </main>
+ 
+    <section class="snap-start h-screen overflow-hidden">
+        @include('inicio.guardaIdeas')
+    </section>
+
+
+    <section class="snap-start h-screen overflow-hidden">
+        @include('inicio.crealo')
+    </section>
+
+</main>
   <footer class="w-full border-t border-gray-200 bg-white py-4">
     <div class="max-w-6xl mx-auto px-4 flex flex-wrap justify-center text-sm text-gray-600 space-x-4">
       <a href="{{ route('Condiciones') }}" class="text-blue-600 hover:underline">Condiciones de servicio</a>

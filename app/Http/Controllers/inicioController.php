@@ -76,4 +76,20 @@ class inicioController extends Controller
     {
         return view('Liderazgo');
     }
+    public function buscaIdea()
+    {
+        return view('inicio.buscaIdea');
+    }
+    public function guardaIdeas()
+    {
+        return view('inicio.guardaIdeas');
+       }    
+    public function crealo()
+    {
+        return view('inicio.crealo');
+         }  
+    public function inicioLogueado()
+    {
+        return view('InicioLogueado');  
+        }
 }
