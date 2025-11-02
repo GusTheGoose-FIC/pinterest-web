@@ -65,6 +65,7 @@ Route::get('/Ayuda', [inicioController::class, 'Ayuda'])->name('Ayuda');
 
 Route::get('/AvisosnoUsuario', [inicioController::class, 'AvisosnoUsuarios'])->name('AvisosnoUsuario');
 Route::get('/Liderazgo', [inicioController::class, 'Liderazgo'])->name('Liderazgo');
+Route::get('/inicioLogueado', [inicioController::class, 'inicioLogueado'])->name('inicioLogueado');
 
 require __DIR__.'/auth.php';
 
