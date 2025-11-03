@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
+use Illuminate\Support\Str;
 use Illuminate\View\View;
 
 class RegisteredUserController extends Controller
@@ -30,6 +31,11 @@ class RegisteredUserController extends Controller
      */
     public function register(Request $request): RedirectResponse
     {
+        // Normalizar email en minúsculas para que no falle la validación 'lowercase'
+        if ($request->has('email')) {
+            $request->merge(['email' => Str::lower($request->input('email'))]);
+        }
+
         $request->validate([
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
             'password' => ['required', Rules\Password::defaults()],
@@ -37,23 +43,29 @@ class RegisteredUserController extends Controller
         ]);
 
         $user = User::create([
-            
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'date'=> $request->date 
         ]);
 
+        // Crear perfil de usuario con username opcional
+        UserProfile::create([
+            'user_id' => $user->id,
+            'username' => $request->email, // Usar email como username por defecto
+            'bio' => null,
+            'phone' => null
+        ]);
+
         event(new Registered($user));
 
-        Auth::login($user);
+    Auth::login($user);
+    // Regenerar sesión para prevenir fijación y asegurar persistencia de la bandera
+    $request->session()->regenerate();
 
-        return redirect(route('inicio', absolute: false));
-
-        
+        return redirect()->route('inicioLogueado');
     }
 
     public function Userprofile(){
-        
         return $this->hasOne(UserProfile::class);
     }
 }

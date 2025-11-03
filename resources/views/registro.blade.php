@@ -37,10 +37,11 @@
 
       <div class="mt-4">
         <x-input-label for="date" :value="__('Fecha de nacimiento')"/>
-        <x-text-input id="password"
+        <x-text-input id="date"
           class="w-full border border-gray-300 rounded-xl px-4 py-3 text-gray-500 focus:ring-2 focus:ring-red-500 focus:outline-none"
           type="date"
-          name="date"/>
+          name="date" required />
+        <x-input-error :messages="$errors->get('date')" class="mt-2" />
       </div>
 
       {{-- CAMPO PASSWORD CONFIRMATION 

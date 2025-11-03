@@ -107,14 +107,28 @@ function carousel() {
     </div>
 
     <div class="flex items-center space-x-3">
-      <button onclick="window.location.href='{{ route('Login') }}'"
-        class="bg-[#E60023] text-white font-semibold px-4 py-2 rounded-full hover:bg-[#ad0019] transition">
-        Log in
-      </button>
-      <button onclick="window.location.href='{{ route('registro') }}'"
-      class="bg-gray-100 text-black font-semibold px-4 py-2 rounded-full hover:bg-gray-200 transition">
-        Sign up
-      </button>
+      @auth
+        <a href="{{ route('inicioLogueado') }}"
+          class="bg-[#E60023] text-white font-semibold px-4 py-2 rounded-full hover:bg-[#ad0019] transition inline-block text-center">
+          Ver Feed
+        </a>
+        <form method="POST" action="{{ route('logout') }}" class="inline">
+          @csrf
+          <button type="submit"
+            class="bg-gray-100 text-black font-semibold px-4 py-2 rounded-full hover:bg-gray-200 transition">
+            Cerrar sesión
+          </button>
+        </form>
+      @else
+        <a href="{{ route('Login') }}"
+          class="bg-[#E60023] text-white font-semibold px-4 py-2 rounded-full hover:bg-[#ad0019] transition inline-block text-center">
+          Log in
+        </a>
+        <a href="{{ route('registro') }}"
+          class="bg-gray-100 text-black font-semibold px-4 py-2 rounded-full hover:bg-gray-200 transition inline-block text-center">
+          Sign up
+        </a>
+      @endauth
     </div>
   </nav>
 

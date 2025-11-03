@@ -45,8 +45,6 @@ Route::get('/News', [inicioController::class, 'News'])->name('News');
 
 Route::get('/Login', [inicioController::class, 'Login'])->name('Login');
 
-Route::get('/registro', [RegisteredUserController::class, 'registro'])->name('registro');
-
 Route::get('/Condiciones', [inicioController::class, 'Condiciones'])->name('Condiciones');
 
 Route::get('/PoliticasPrivacidad', [inicioController::class, 'PoliticasPrivacidad'])->name('PoliticasPrivacidad');
@@ -65,11 +63,20 @@ Route::get('/Ayuda', [inicioController::class, 'Ayuda'])->name('Ayuda');
 
 Route::get('/AvisosnoUsuario', [inicioController::class, 'AvisosnoUsuarios'])->name('AvisosnoUsuario');
 Route::get('/Liderazgo', [inicioController::class, 'Liderazgo'])->name('Liderazgo');
-Route::get('/inicioLogueado', [inicioController::class, 'inicioLogueado'])->name('inicioLogueado');
+Route::get('/inicioLogueado', [inicioController::class, 'inicioLogueado'])
+    ->middleware(['auth'])
+    ->name('inicioLogueado');
 
 require __DIR__.'/auth.php';
 
 Route::get('/buscaIdea', [inicioController::class, 'buscaIdea'])->name('buscaIdea');
 Route::get('/guardaIdeas', [inicioController::class, 'guardaIdeas'])->name('guardaIdeas');
 Route::get('/crealo', [inicioController::class, 'crealo'])->name('crealo');
-Route::get('/inicioLogueado', [inicioController::class, 'inicioLogueado'])->name('inicioLogueado');
+// duplicado removido; la ruta ya está definida arriba con middleware('auth')
+Route::get('/creacionPines', [inicioController::class, 'creacionPines'])
+    ->middleware(['auth'])
+    ->name('creacionPines');
+
+Route::post('/creacionPines', [inicioController::class, 'storePin'])
+    ->middleware(['auth'])
+    ->name('pins.store');
