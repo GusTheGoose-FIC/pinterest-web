@@ -178,7 +178,9 @@
                     <div x-show="expanded" x-collapse class="space-y-4">
                         <!-- Permitir comentarios -->
                         <div class="flex items-start gap-3">
-                            <input type="checkbox" id="allowComments" name="allow_comments" checked
+                            <!-- Enviar explícitamente false cuando el checkbox está desmarcado -->
+                            <input type="hidden" name="allow_comments" value="0">
+                            <input type="checkbox" id="allowComments" name="allow_comments" value="1" checked
                                    class="w-10 h-6 appearance-none bg-blue-600 rounded-full cursor-pointer relative
                                           after:content-[''] after:absolute after:top-1 after:left-1 after:bg-white 
                                           after:rounded-full after:h-4 after:w-4 after:transition-all
@@ -190,7 +192,9 @@
 
                         <!-- Mostrar productos parecidos -->
                         <div class="flex items-start gap-3">
-                            <input type="checkbox" id="showSimilar" name="show_similar" checked
+                            <!-- Enviar explícitamente false cuando el checkbox está desmarcado -->
+                            <input type="hidden" name="show_similar" value="0">
+                            <input type="checkbox" id="showSimilar" name="show_similar" value="1" checked
                                    class="w-10 h-6 appearance-none bg-blue-600 rounded-full cursor-pointer relative
                                           after:content-[''] after:absolute after:top-1 after:left-1 after:bg-white 
                                           after:rounded-full after:h-4 after:w-4 after:transition-all

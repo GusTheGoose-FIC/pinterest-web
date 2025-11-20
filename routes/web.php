@@ -80,3 +80,10 @@ Route::get('/creacionPines', [inicioController::class, 'creacionPines'])
 Route::post('/creacionPines', [inicioController::class, 'storePin'])
     ->middleware(['auth'])
     ->name('pins.store');
+
+// Rutas de administrador
+Route::middleware(['auth'])->prefix('admin')->group(function () {
+    Route::get('/', [App\Http\Controllers\AdminController::class, 'index'])->name('admin.dashboard');
+    Route::delete('/users/{id}', [App\Http\Controllers\AdminController::class, 'deleteUser'])->name('admin.deleteUser');
+    Route::delete('/pins/{id}', [App\Http\Controllers\AdminController::class, 'deletePin'])->name('admin.deletePin');
+});

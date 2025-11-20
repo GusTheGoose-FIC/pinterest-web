@@ -68,6 +68,18 @@
                         
                         <div class="border-t my-2"></div>
                         
+                        {{-- Solo mostrar enlace de admin a usuarios autorizados --}}
+                        @php
+                            $adminEmails = ['admin@pinterest.com', 'brandon@admin.com'];
+                        @endphp
+                        @if(in_array(Auth::user()->email, $adminEmails))
+                        <a href="{{ route('admin.dashboard') }}" class="block px-4 py-3 hover:bg-gray-100 text-sm font-medium text-red-600">
+                             Panel de Administrador
+                        </a>
+                        
+                        <div class="border-t my-2"></div>
+                        @endif
+                        
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
                             <button type="submit" class="w-full text-left px-4 py-3 hover:bg-gray-100 text-sm font-medium">
