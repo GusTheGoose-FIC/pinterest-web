@@ -16,3 +16,8 @@ Route::get('/homefeed', [indexController::class, 'index']);
 
 Route::get('/', [inicioController::class, 'inicio']);
 
+Route::get('/Información', [inicioController::class, 'Información'])->name('Información');
+
+Route::get('/empresa', [inicioController::class, 'empresa'])->name('empresa');
+
+
