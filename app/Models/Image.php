@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
-use MongoDB\Laravel\Eloquent\Model as Eloquent;
+use Illuminate\Database\Eloquent\Model;
+use Mongodb\Eloquent\Model as Eloquent;
+
 
 class Image extends Eloquent
 {

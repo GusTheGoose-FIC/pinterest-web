@@ -16,14 +16,14 @@ Route::middleware(['auth'])->group(function () {
 
 
 
-Route::get('/test-mongo', function () {
+/*Route::get('/test-mongo', function () {
     try {
         $dbs = DB::connection('mongodb')->getMongoClient()->listDatabases();
         return '✅ Conectado a MongoDB';
     } catch (\Exception $e) {
         return '❌ Error: ' . $e->getMessage();
     }
-});
+});*/
 
 Route::get('/test', function () {
     return response()->json(['message' => 'API funcionando']);
@@ -72,6 +72,8 @@ require __DIR__.'/auth.php';
 Route::get('/buscaIdea', [inicioController::class, 'buscaIdea'])->name('buscaIdea');
 Route::get('/guardaIdeas', [inicioController::class, 'guardaIdeas'])->name('guardaIdeas');
 Route::get('/crealo', [inicioController::class, 'crealo'])->name('crealo');
+
+
 // duplicado removido; la ruta ya está definida arriba con middleware('auth')
 Route::get('/creacionPines', [inicioController::class, 'creacionPines'])
     ->middleware(['auth'])

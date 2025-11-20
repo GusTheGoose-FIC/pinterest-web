@@ -3,9 +3,10 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 
-class PinPostgres extends Model
+use MongoDB\Laravel\Eloquent\Model as Eloquent;
+
+class PinPostgres extends Eloquent
 {
     use HasFactory;
 
