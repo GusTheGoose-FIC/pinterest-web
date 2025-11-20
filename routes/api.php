@@ -1,9 +1,13 @@
 <?php
 
-use App\Http\Controllers\inicioController;
-use App\Http\Controllers\userController;
-
-use Illuminate\Http\Request;
+use App\Http\Controllers\Auth\RegisteredUserController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
 
-Route::post('LOGIN', [inicioController::class, 'login']);
+
+Route::post('/register', function (Request $request) {
+    return response()->json([
+        'message' => 'Ruta funcionando correctamente',
+        'data' => $request->all()
+    ]);
+});

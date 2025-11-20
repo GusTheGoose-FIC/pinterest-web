@@ -1,12 +1,29 @@
 <?php
 
+use App\Http\Controllers\Auth\RegisteredUserController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Controller;
 use App\Http\Controllers\indexController;
 use App\Http\Controllers\inicioController;
-use App\Http\Controllers\userController;
+use App\Http\Controllers\ImageController;
 
-use function PHPUnit\Framework\returnSelf;
+// Rutas para manejo de imágenes
+Route::middleware(['auth'])->group(function () {
+    Route::post('/images', [ImageController::class, 'store'])->name('images.store');
+    Route::get('/images/{image}', [ImageController::class, 'show'])->name('images.show');
+    Route::delete('/images/{image}', [ImageController::class, 'destroy'])->name('images.destroy');
+    Route::get('/ideas/{idea}/images', [ImageController::class, 'getByIdea'])->name('ideas.images');
+});
+
+
+
+Route::get('/test-mongo', function () {
+    try {
+        $dbs = DB::connection('mongodb')->getMongoClient()->listDatabases();
+        return '✅ Conectado a MongoDB';
+    } catch (\Exception $e) {
+        return '❌ Error: ' . $e->getMessage();
+    }
+});
 
 Route::get('/test', function () {
     return response()->json(['message' => 'API funcionando']);
@@ -15,6 +32,8 @@ Route::get('/test', function () {
 Route::get('/homefeed', [indexController::class, 'index']);
 
 Route::get('/', [inicioController::class, 'inicio']);
+
+Route::get('/inicio', [inicioController::class, 'inicio'])->name('inicio');
 
 Route::get('/Información', [inicioController::class, 'Información'])->name('Información');
 
@@ -26,4 +45,38 @@ Route::get('/News', [inicioController::class, 'News'])->name('News');
 
 Route::get('/Login', [inicioController::class, 'Login'])->name('Login');
 
+Route::get('/Condiciones', [inicioController::class, 'Condiciones'])->name('Condiciones');
 
+Route::get('/PoliticasPrivacidad', [inicioController::class, 'PoliticasPrivacidad'])->name('PoliticasPrivacidad');
+
+Route::get('/Comunidad', [inicioController::class, 'Comunidad'])->name('Comunidad');
+
+Route::get('/propiedadIntelectual', [inicioController::class, 'propiedadIntelectual'])->name('propiedadIntelectual');
+
+Route::get('/marcaComercial', [inicioController::class, 'marcaComercial'])->name('marcaComercial');
+
+Route::get('/Transparencia', [inicioController::class, 'Transparencia'])->name('Transparencia');
+
+Route::get('/Mas', [inicioController::class, 'Mas'])->name('Mas');
+
+Route::get('/Ayuda', [inicioController::class, 'Ayuda'])->name('Ayuda');
+
+Route::get('/AvisosnoUsuario', [inicioController::class, 'AvisosnoUsuarios'])->name('AvisosnoUsuario');
+Route::get('/Liderazgo', [inicioController::class, 'Liderazgo'])->name('Liderazgo');
+Route::get('/inicioLogueado', [inicioController::class, 'inicioLogueado'])
+    ->middleware(['auth'])
+    ->name('inicioLogueado');
+
+require __DIR__.'/auth.php';
+
+Route::get('/buscaIdea', [inicioController::class, 'buscaIdea'])->name('buscaIdea');
+Route::get('/guardaIdeas', [inicioController::class, 'guardaIdeas'])->name('guardaIdeas');
+Route::get('/crealo', [inicioController::class, 'crealo'])->name('crealo');
+// duplicado removido; la ruta ya está definida arriba con middleware('auth')
+Route::get('/creacionPines', [inicioController::class, 'creacionPines'])
+    ->middleware(['auth'])
+    ->name('creacionPines');
+
+Route::post('/creacionPines', [inicioController::class, 'storePin'])
+    ->middleware(['auth'])
+    ->name('pins.store');

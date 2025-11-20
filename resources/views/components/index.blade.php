@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pinterest</title>
 
-    @vite(['resources/css/app.css'])
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
         <nav class="relative p-2 bg-amber-800 ">
@@ -43,6 +43,5 @@
                 </div>
             </div>
         </nav>
-    
 </body>
 </html>

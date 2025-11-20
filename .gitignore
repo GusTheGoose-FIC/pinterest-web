@@ -16,6 +16,7 @@
 /public/build
 /public/hot
 /public/storage
+/mongo_data/
 /postgres_data
 /storage/*.key
 /storage/pail
