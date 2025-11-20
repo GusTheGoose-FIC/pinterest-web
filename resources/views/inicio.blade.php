@@ -26,11 +26,12 @@
     <div class="flex items-center space-x-6 text-blue-700 font-medium">
       <a href="{{ route('Información') }}" class="hover:underline">Informacion</a>
       <a href="{{ route('empresa') }}" class="hover:underline">Empresas</a>
-      <a href="#" class="hover:underline">Crear</a>
-      <a href="#" class="hover:underline">Noticias</a>
+      <a href="{{ route('Create') }}" class="hover:underline">Crear</a>
+      <a href="{{ route('News') }}" class="hover:underline">Noticias</a>
     </div>
     <div class="flex items-center space-x-3">
-      <button class="bg-[#E60023] text-white font-semibold px-4 py-2 rounded-full hover:bg-[#ad0019] transition">Log in</button>
+     <button onclick="window.location.href='{{ route('Login') }}'"
+    class="bg-[#E60023] text-white font-semibold px-4 py-2 rounded-full hover:bg-[#ad0019] transition">Log in</button>
       <button class="bg-gray-100 text-black font-semibold px-4 py-2 rounded-full hover:bg-gray-200 transition">Sign up</button>
     </div>
   </nav>
