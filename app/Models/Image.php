@@ -2,7 +2,13 @@
 
 namespace App\Models;
 
+<<<<<<< HEAD
 use Mongodb\Eloquent\Model as Eloquent;
+=======
+use Illuminate\Database\Eloquent\Model;
+use Mongodb\Eloquent\Model as Eloquent;
+
+>>>>>>> PanelAdmin
 
 class Image extends Eloquent
 {

@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Storage;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 use Jenssegers\Mongodb\Eloquent\Model as Eloquent;
 
+
 class inicioController extends Controller
 {
     public function inicio()

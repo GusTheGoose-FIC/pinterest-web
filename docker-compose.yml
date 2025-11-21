@@ -46,8 +46,12 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
+<<<<<<< HEAD
 
  # MongoDB
+=======
+# MongoDB
+>>>>>>> PanelAdmin
   mongodb:
     image: mongo:6.0
     container_name: mongodb
@@ -60,7 +64,11 @@ services:
       - mongo_data:/data/db
     environment:
       MONGO_INITDB_ROOT_USERNAME: admin
+<<<<<<< HEAD
       MONGO_INITDB_ROOT_PASSWORD: secretpassword
+=======
+      MONGO_INITDB_ROOT_PASSWORD: admin123
+>>>>>>> PanelAdmin
 
   # MongoDB Express (Interfaz Gráfica)
   mongo-express:
@@ -73,8 +81,13 @@ services:
       - laravel-network
     environment:
       ME_CONFIG_MONGODB_ADMINUSERNAME: admin
+<<<<<<< HEAD
       ME_CONFIG_MONGODB_ADMINPASSWORD: secretpassword
       ME_CONFIG_MONGODB_URL: mongodb://admin:secretpassword@mongodb:27017/
+=======
+      ME_CONFIG_MONGODB_ADMINPASSWORD: admin123
+      ME_CONFIG_MONGODB_URL: mongodb://admin:admin123@mongodb:27017/
+>>>>>>> PanelAdmin
       ME_CONFIG_BASICAUTH_USERNAME: admin
       ME_CONFIG_BASICAUTH_PASSWORD: admin
     depends_on:

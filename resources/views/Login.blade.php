@@ -27,7 +27,8 @@
         <h1 class="text-2xl font-semibold text-gray-800 mb-1">Te damos la bienvenida a</h1>
         <h2 class="text-3xl font-bold text-gray-900 mb-8">Pinterest</h2>
         <form action="{{ route('login') }}" method="POST" class="space-y-4">
-
+           
+          <!--Campo email-->
             @csrf
             <div class="mt-4">
               <x-input-label  for="email" :value="__('Correo Electronico')" />
@@ -35,6 +36,7 @@
               <x-input-error :messages="$errors->get('email')" class="mt-2" />
             </div>
 
+            <!--Campo password-->
             <div class="mt-4 "> 
               <x-input-label for="password" :value="__('Contraseña')"/>
               <x-text-input id="password"
