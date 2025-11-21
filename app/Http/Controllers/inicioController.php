@@ -10,6 +10,7 @@ use App\Models\PinPostgres;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
+use Jenssegers\Mongodb\Eloquent\Model as Eloquent;
 
 class inicioController extends Controller
 {
