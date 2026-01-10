@@ -5,6 +5,10 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\indexController;
 use App\Http\Controllers\inicioController;
 use App\Http\Controllers\ImageController;
+use Illuminate\Support\Facades\DB;
+use Exception;
+
+
 
 // Rutas para manejo de imágenes
 Route::middleware(['auth'])->group(function () {
@@ -82,3 +86,4 @@ Route::get('/creacionPines', [inicioController::class, 'creacionPines'])
 Route::post('/creacionPines', [inicioController::class, 'storePin'])
     ->middleware(['auth'])
     ->name('pins.store');
+
