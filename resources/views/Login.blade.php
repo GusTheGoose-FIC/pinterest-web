@@ -47,7 +47,7 @@
             </div>
 
             <div class="text-right">
-                <a href="#" class="text-sm text-blue-600 hover:underline">¿Olvidaste tu contraseña?</a>
+                <a href="{{ route('password.request') }}" class="text-sm text-blue-600 hover:underline">¿Olvidaste tu contraseña?</a>
             </div>
 
             <x-primary-button class="ms-3 w-full bg-red-600 text-white rounded-xl py-3 font-semibold hover:bg-red-700 transition">

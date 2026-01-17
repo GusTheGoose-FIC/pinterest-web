@@ -39,6 +39,30 @@ class PinPostgres extends Model
     }
 
     /**
+     * Relación con comentarios
+     */
+    public function comments()
+    {
+        return $this->hasMany(Comment::class, 'pin_id')->orderBy('created_at', 'desc');
+    }
+
+    /**
+     * Relación con likes
+     */
+    public function likes()
+    {
+        return $this->hasMany(Like::class, 'pin_id');
+    }
+
+    /**
+     * Relación con reportes
+     */
+    public function reports()
+    {
+        return $this->hasMany(PinReport::class, 'pin_id');
+    }
+
+    /**
      * Devuelve el documento de MongoDB asociado usando mongo_id.
      */
     public function mongo()

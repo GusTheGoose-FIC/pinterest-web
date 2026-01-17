@@ -3,3 +3,5 @@
 node_modules
 vendor
 /postgres_data
+mongo_data
+public/storage

@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\PinPostgres;
+use App\Models\PinReport;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class AdminController extends Controller
 {
@@ -22,7 +24,8 @@ class AdminController extends Controller
     {
         $adminEmails = [
             'admin@pinterest.com',
-            'brandon@admin.com', 
+            'brandon@admin.com',
+            'paniagua@gmail.com', 
         ];
         
         return in_array(Auth::user()->email, $adminEmails);
@@ -41,7 +44,38 @@ class AdminController extends Controller
         // Obtener pines con información del usuario
         $pins = PinPostgres::with(['user.profile'])->orderBy('created_at', 'desc')->get();
         
-        return view('PantallaAdmin', compact('users', 'pins'));
+        // Obtener reportes de pines con estadísticas
+        $pinReports = PinReport::with(['pin', 'user'])
+            ->orderBy('created_at', 'desc')
+            ->get();
+        
+        // Agrupar reportes por pin
+        $reportsByPin = [];
+        foreach ($pinReports as $report) {
+            $pinId = $report->pin_id;
+            if (!isset($reportsByPin[$pinId])) {
+                $reportsByPin[$pinId] = [
+                    'pin' => $report->pin,
+                    'total' => 0,
+                    'by_type' => [],
+                    'reports' => []
+                ];
+            }
+            $reportsByPin[$pinId]['total']++;
+            $reason = $report->reason;
+            if (!isset($reportsByPin[$pinId]['by_type'][$reason])) {
+                $reportsByPin[$pinId]['by_type'][$reason] = 0;
+            }
+            $reportsByPin[$pinId]['by_type'][$reason]++;
+            $reportsByPin[$pinId]['reports'][] = $report;
+        }
+        
+        // Ordenar por total de reportes descendente
+        uasort($reportsByPin, function ($a, $b) {
+            return $b['total'] <=> $a['total'];
+        });
+        
+        return view('PantallaAdmin', compact('users', 'pins', 'pinReports', 'reportsByPin'));
     }
 
     /**
@@ -103,6 +137,42 @@ class AdminController extends Controller
             
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Error al eliminar el pin: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Restablecer contraseña de un usuario
+     */
+    public function resetUserPassword(Request $request, $id)
+    {
+        // Verificar permisos de admin
+        if (!$this->isAdmin()) {
+            return response()->json(['success' => false, 'message' => 'No tienes permisos de administrador.'], 403);
+        }
+
+        $request->validate([
+            'new_password' => 'required|string|min:8',
+        ]);
+
+        try {
+            $user = User::findOrFail($id);
+            
+            // Verificar que no se cambie su propia contraseña por este método
+            if ($user->id === Auth::id()) {
+                return response()->json(['success' => false, 'message' => 'Usa el perfil para cambiar tu propia contraseña.'], 400);
+            }
+            
+            // Cambiar la contraseña
+            $user->password = Hash::make($request->new_password);
+            $user->save();
+            
+            return response()->json([
+                'success' => true, 
+                'message' => 'Contraseña restablecida correctamente para ' . ($user->email ?? 'el usuario')
+            ]);
+            
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => 'Error al restablecer contraseña: ' . $e->getMessage()], 500);
         }
     }
 }

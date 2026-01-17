@@ -28,6 +28,13 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-enable mongodb \
     && rm -rf /var/lib/apt/lists/*
 
+# Configurar límites de PHP para archivos grandes
+RUN echo "upload_max_filesize = 100M" >> /usr/local/etc/php/conf.d/uploads.ini && \
+    echo "post_max_size = 100M" >> /usr/local/etc/php/conf.d/uploads.ini && \
+    echo "memory_limit = 512M" >> /usr/local/etc/php/conf.d/uploads.ini && \
+    echo "max_input_time = 300" >> /usr/local/etc/php/conf.d/uploads.ini && \
+    echo "max_execution_time = 300" >> /usr/local/etc/php/conf.d/uploads.ini
+
 # Instalar Composer desde la imagen oficial
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
@@ -42,11 +49,12 @@ RUN mkdir -p storage/framework/cache \
     storage/framework/views \
     storage/logs \
     bootstrap/cache \
+    public/uploads/pins \
     && touch storage/logs/laravel.log
 
 # Asignar permisos correctos
 RUN chown -R www-data:www-data /var/www/html \
-    && chmod -R 775 storage bootstrap/cache
+    && chmod -R 775 storage bootstrap/cache public/uploads
 
 # Instalar dependencias de Laravel (como www-data para evitar errores de permisos posteriores)
 USER www-data
@@ -57,11 +65,11 @@ RUN composer install --no-interaction --optimize-autoloader
 USER root
 
 # Fix de permisos en tiempo de ejecución
-RUN chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache \
+RUN chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache /var/www/html/public/uploads \
     && chown -R www-data:www-data /var/www/html
 
 # Script inline para permisos (evita problemas de formato de archivo)
-RUN printf '#!/bin/bash\nchown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache\nchmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache\nexec "$@"\n' > /usr/local/bin/entrypoint.sh && \
+RUN printf '#!/bin/bash\nchown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache /var/www/html/public/uploads\nchmod -R 777 /var/www/html/storage /var/www/html/bootstrap/cache /var/www/html/public/uploads\nexec "$@"\n' > /usr/local/bin/entrypoint.sh && \
     chmod +x /usr/local/bin/entrypoint.sh
 
 # Definir el entrypoint
