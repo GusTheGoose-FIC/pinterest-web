@@ -9,6 +9,7 @@ use App\Models\Pin;
 use App\Models\PinPostgres;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 use Jenssegers\Mongodb\Eloquent\Model as Eloquent;
 
@@ -95,14 +96,20 @@ class inicioController extends Controller
         return view('inicio.crealo');
     }
 
-    public function inicioLogueado()
+    public function inicioLogueado(Request $request)
     {
+        $search = trim((string) $request->query('q', ''));
+
         // Preferir Postgres como fuente principal y "jalar" la imagen desde Mongo usando mongo_id
         try {
-            $pins = PinPostgres::query()
-                ->with('user.userProfile')
+            $pinsQuery = PinPostgres::query()
+                ->with('user.userProfile');
+
+            $this->applyPinSearchFilter($pinsQuery, $search);
+
+            $pins = $pinsQuery
                 ->orderByDesc('created_at')
-                ->limit(60)
+                ->limit(120)
                 ->get();
 
             // Adaptar al formato esperado por la vista ($images con 'url', 'title', 'id', etc.)
@@ -124,8 +131,19 @@ class inicioController extends Controller
             try {
                 $images = Image::query()
                     ->orderByDesc('created_at')
-                    ->limit(60)
+                    ->limit(120)
                     ->get();
+
+                if ($search !== '') {
+                    $needle = Str::lower($search);
+                    $images = $images
+                        ->filter(function ($img) use ($needle) {
+                            $title = Str::lower((string) ($img->title ?? ''));
+                            $description = Str::lower((string) ($img->description ?? ''));
+                            return Str::contains($title, $needle) || Str::contains($description, $needle);
+                        })
+                        ->values();
+                }
             } catch (\Throwable $e) {
                 $images = collect();
             }
@@ -136,7 +154,11 @@ class inicioController extends Controller
         if (Auth::check()) {
             try {
                 $userPinsQuery = PinPostgres::query()
-                    ->where('user_id', Auth::id())
+                    ->where('user_id', Auth::id());
+
+                $this->applyPinSearchFilter($userPinsQuery, $search);
+
+                $userPinsQuery = $userPinsQuery
                     ->orderByDesc('created_at')
                     ->get();
 
@@ -155,7 +177,105 @@ class inicioController extends Controller
             }
         }
 
-        return view('InicioLogueado', ['images' => $images, 'userPins' => $userPins]);
+        return view('InicioLogueado', [
+            'images' => $images,
+            'userPins' => $userPins,
+            'searchQuery' => $search,
+        ]);
+    }
+
+    public function buscarPins(Request $request)
+    {
+        $authUser = Auth::user();
+        if (!$authUser) {
+            return redirect()->route('login');
+        }
+
+        $search = trim((string) $request->query('q', ''));
+        $followingIds = $authUser->following()
+            ->pluck('users.id')
+            ->map(fn ($id) => (int) $id)
+            ->filter(fn ($id) => $id > 0)
+            ->values();
+
+        $resultPins = collect();
+        if ($search !== '') {
+            $resultQuery = PinPostgres::query()->with('user.userProfile');
+            $this->applyPinSearchFilter($resultQuery, $search);
+            $resultPins = $resultQuery
+                ->orderByDesc('created_at')
+                ->limit(180)
+                ->get();
+        }
+
+        $suggestedQuery = PinPostgres::query()
+            ->with('user.userProfile')
+            ->where('user_id', '!=', $authUser->id);
+        if ($followingIds->isNotEmpty()) {
+            $suggestedQuery->whereNotIn('user_id', $followingIds->all());
+        }
+        $this->applyPinSearchFilter($suggestedQuery, $search);
+        $suggestedPins = $suggestedQuery
+            ->orderByDesc('created_at')
+            ->limit(120)
+            ->get();
+
+        $followedPins = collect();
+        if ($followingIds->isNotEmpty()) {
+            $followedQuery = PinPostgres::query()
+                ->with('user.userProfile')
+                ->whereIn('user_id', $followingIds->all());
+            $this->applyPinSearchFilter($followedQuery, $search);
+            $followedPins = $followedQuery
+                ->orderByDesc('created_at')
+                ->limit(120)
+                ->get();
+        }
+
+        $myPinsQuery = PinPostgres::query()
+            ->with('user.userProfile')
+            ->where('user_id', $authUser->id);
+        $this->applyPinSearchFilter($myPinsQuery, $search);
+        $myPins = $myPinsQuery
+            ->orderByDesc('created_at')
+            ->limit(120)
+            ->get();
+
+        return view('buscar-pines', [
+            'searchQuery' => $search,
+            'resultPins' => $resultPins,
+            'suggestedPins' => $suggestedPins,
+            'followedPins' => $followedPins,
+            'myPins' => $myPins,
+            'followingCount' => $followingIds->count(),
+        ]);
+    }
+
+    private function applyPinSearchFilter($query, string $search): void
+    {
+        if ($search === '') {
+            return;
+        }
+
+        $tokens = collect(preg_split('/\s+/u', Str::lower($search)) ?: [])
+            ->map(fn ($token) => trim((string) $token))
+            ->filter(fn ($token) => $token !== '')
+            ->values();
+
+        if ($tokens->isEmpty()) {
+            return;
+        }
+
+        $query->where(function ($outer) use ($tokens) {
+            foreach ($tokens as $token) {
+                $like = '%' . $token . '%';
+                $outer->where(function ($inner) use ($like) {
+                    $inner->whereRaw('LOWER(COALESCE(title, \'\')) LIKE ?', [$like])
+                        ->orWhereRaw('LOWER(COALESCE(description, \'\')) LIKE ?', [$like])
+                        ->orWhereRaw('LOWER(COALESCE(board, \'\')) LIKE ?', [$like]);
+                });
+            }
+        });
     }
     public function creacionPines()
     {
@@ -191,8 +311,15 @@ class inicioController extends Controller
         } catch (\Exception $e) {
             // Si falla Cloudinary, usar storage local
             if ($request->hasFile('image')) {
-                $imagePath = $request->file('image')->store('pins', 'public');
-                $uploadedFileUrl = asset('storage/' . $imagePath);
+                $uploadsPath = public_path('uploads/pins');
+                if (!is_dir($uploadsPath)) {
+                    mkdir($uploadsPath, 0777, true);
+                }
+
+                $extension = strtolower($request->file('image')->getClientOriginalExtension() ?: 'jpg');
+                $filename = 'pin-' . time() . '-' . uniqid() . '.' . $extension;
+                $request->file('image')->move($uploadsPath, $filename);
+                $uploadedFileUrl = asset('uploads/pins/' . $filename);
             } else {
                 return back()->withErrors(['image' => 'Error al subir la imagen']);
             }

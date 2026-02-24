@@ -10,7 +10,9 @@ class UserProfile extends Model
         'user_id',
         'username',
         'bio',
-        'phone'
+        'phone',
+        'avatar_url',
+        'cover_url',
     ];
 
     public function user()

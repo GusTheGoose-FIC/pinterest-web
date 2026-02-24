@@ -73,4 +73,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(PinPostgres::class);
     }
+
+    public function savedPins()
+    {
+        return $this->hasMany(SavedPin::class, 'user_id');
+    }
 }

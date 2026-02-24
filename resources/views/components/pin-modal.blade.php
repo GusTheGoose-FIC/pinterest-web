@@ -52,7 +52,7 @@
                             <span id="userInitial">U</span>
                         </div>
                         <div>
-                            <p id="userName" class="font-semibold text-sm text-gray-900">Usuario</p>
+                            <a id="userProfileLink" href="#" class="font-semibold text-sm text-gray-900 hover:text-red-600 transition">Usuario</a>
                             <p id="pinDate" class="text-xs text-gray-500">hace poco</p>
                         </div>
                     </div>
@@ -94,6 +94,16 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v12l-2 4m0 0h10l-2-4m-6 0h6M13 3v12"></path>
                     </svg>
                     <span class="text-sm">Reportar</span>
+                </button>
+                <button 
+                    id="deletePinBtn"
+                    onclick="deletePin(currentPinId, document.getElementById('pinTitle').textContent || 'Pin')"
+                    class="hidden flex items-center gap-1 text-red-600 hover:text-red-700 transition"
+                >
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                    </svg>
+                    <span class="text-sm">Eliminar</span>
                 </button>
             </div>
 
@@ -317,10 +327,22 @@
         }
     }
 
+    function updateDeletePinButton(canDelete) {
+        const btn = document.getElementById('deletePinBtn');
+        if (!btn) return;
+
+        if (canDelete) {
+            btn.classList.remove('hidden');
+        } else {
+            btn.classList.add('hidden');
+        }
+    }
+
     // Abrir modal con detalles del pin
     function openPinModal(pinId) {
         currentPinId = pinId;
         document.getElementById('pinModal').classList.remove('hidden');
+        updateDeletePinButton(false);
         
         // Cargar datos del pin y comentarios
         fetch('/pins/' + pinId + '/detail')
@@ -336,12 +358,17 @@
                 document.getElementById('pinTitle').textContent = pin.title || 'Sin título';
                 document.getElementById('pinDescription').textContent = pin.description || 'Sin descripción';
                 document.getElementById('userInitial').textContent = pin.user_initial;
-                document.getElementById('userName').textContent = pin.user_name || 'Usuario';
+                const profileLink = document.getElementById('userProfileLink');
+                if (profileLink) {
+                    profileLink.textContent = pin.user_name || 'Usuario';
+                    profileLink.href = '/usuarios/' + pin.user_id;
+                }
                 document.getElementById('pinDate').textContent = pin.created_at;
                 currentAuthorId = pin.user_id;
                 currentAuthorIsSelf = !!pin.is_self;
                 currentAuthorIsFollowing = !!pin.is_following_author;
                 updateFollowButton(currentAuthorIsFollowing, currentAuthorIsSelf);
+                updateDeletePinButton(currentAuthorIsSelf);
                 const followersText = document.getElementById('followersCountText');
                 if (followersText) {
                     followersText.textContent = formatFollowers(pin.followers_count || 0);

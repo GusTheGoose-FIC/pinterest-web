@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use App\Models\Pin;
+use Illuminate\Support\Str;
 
 class PinPostgres extends Model
 {
@@ -56,6 +57,14 @@ class PinPostgres extends Model
     }
 
     /**
+     * Relación con guardados.
+     */
+    public function savedPins()
+    {
+        return $this->hasMany(SavedPin::class, 'pin_id');
+    }
+
+    /**
      * Relación con reportes
      */
     public function reports()
@@ -77,9 +86,13 @@ class PinPostgres extends Model
      */
     public function getImageUrlAttribute($value)
     {
-        if (!empty($value)) return $value;
-        $mongo = $this->mongo();
-        return $mongo->image_url ?? null;
+        $resolved = $value;
+        if (empty($resolved)) {
+            $mongo = $this->mongo();
+            $resolved = $mongo->image_url ?? null;
+        }
+
+        return $this->normalizeImageUrlForWeb($resolved);
     }
 
     /**
@@ -139,5 +152,40 @@ class PinPostgres extends Model
         if (!empty($value)) return is_array($value) ? $value : json_decode($value, true);
         $mongo = $this->mongo();
         return $mongo->products ?? [];
+    }
+
+    private function normalizeImageUrlForWeb($url)
+    {
+        $value = trim((string) ($url ?? ''));
+        if ($value === '') {
+            return null;
+        }
+
+        if (!app()->bound('request')) {
+            return $value;
+        }
+
+        $base = request()->getSchemeAndHttpHost();
+
+        if (Str::startsWith($value, '/')) {
+            return rtrim($base, '/') . $value;
+        }
+
+        $parsed = parse_url($value);
+        $host = strtolower((string) ($parsed['host'] ?? ''));
+
+        if (in_array($host, ['localhost', '127.0.0.1', '10.0.2.2', '0.0.0.0'], true)) {
+            $path = (string) ($parsed['path'] ?? '');
+            if ($path === '') {
+                return $value;
+            }
+
+            $query = isset($parsed['query']) ? ('?' . $parsed['query']) : '';
+            $fragment = isset($parsed['fragment']) ? ('#' . $parsed['fragment']) : '';
+
+            return rtrim($base, '/') . $path . $query . $fragment;
+        }
+
+        return $value;
     }
 }

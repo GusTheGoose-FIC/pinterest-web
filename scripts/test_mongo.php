@@ -8,10 +8,10 @@ try {
     $pass = getenv('MONGODB_PASSWORD');
     $authDb = getenv('MONGODB_AUTHENTICATION_DATABASE') ?: getenv('MONGO_AUTHDB') ?: 'admin';
 
-    // If env vars are not loaded in this plain PHP script, fall back to the known test creds
+    // If env vars are not loaded in this plain PHP script, fall back to docker-compose creds
     if (!$user) {
         $user = 'admin';
-        $pass = 'admin';
+        $pass = 'secretpassword';
     }
 
     $dsn = sprintf('mongodb://%s:%s@%s:%s/?authSource=%s', $user, $pass, $host, $port, $authDb);

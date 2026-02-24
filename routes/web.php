@@ -12,6 +12,7 @@ use App\Http\Controllers\LikeController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PinReportController;
 use App\Http\Controllers\PublicPinsController;
+use App\Http\Controllers\UserProfileController;
 use App\Http\Controllers\FollowController;
 use App\Http\Controllers\MessageController;
 
@@ -55,6 +56,10 @@ Route::get('/News', [inicioController::class, 'News'])->name('News');
 // Vista pública de pines (solo ver/descargar)
 Route::get('/explorar-publico', [PublicPinsController::class, 'index'])->name('public.pins');
 
+// Perfiles públicos
+Route::get('/usuarios/{user}', [UserProfileController::class, 'show'])->name('users.profile.show');
+Route::middleware(['auth'])->put('/usuarios/{user}', [UserProfileController::class, 'update'])->name('users.profile.update');
+
 Route::get('/Login', [inicioController::class, 'Login'])->name('Login');
 
 Route::get('/Condiciones', [inicioController::class, 'Condiciones'])->name('Condiciones');
@@ -78,6 +83,9 @@ Route::get('/Liderazgo', [inicioController::class, 'Liderazgo'])->name('Liderazg
 Route::get('/inicioLogueado', [inicioController::class, 'inicioLogueado'])
     ->middleware(['auth'])
     ->name('inicioLogueado');
+Route::get('/buscar-pines', [inicioController::class, 'buscarPins'])
+    ->middleware(['auth'])
+    ->name('buscar.pins');
 
 require __DIR__.'/auth.php';
 

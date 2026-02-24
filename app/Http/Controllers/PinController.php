@@ -61,8 +61,8 @@ class PinController extends Controller
      */
     public function destroy(PinPostgres $pin)
     {
-        // Verificar que el usuario sea dueño del pin o sea administrador
-        if (Auth::id() !== $pin->user_id && !$this->isAdmin()) {
+        // Solo el dueño del pin puede eliminarlo
+        if (Auth::id() !== $pin->user_id) {
             return response()->json(['success' => false, 'message' => 'No tienes permiso para eliminar este pin.'], 403);
         }
 
@@ -82,14 +82,5 @@ class PinController extends Controller
         } catch (\Exception $e) {
             return response()->json(['success' => false, 'message' => 'Error al eliminar el pin.'], 500);
         }
-    }
-
-    /**
-     * Verificar si el usuario es administrador
-     */
-    private function isAdmin()
-    {
-        $adminEmails = ['admin@pinterest.com', 'brandon@admin.com', 'paniagua@gmail.com'];
-        return in_array(Auth::user()->email, $adminEmails);
     }
 }
